@@ -147,3 +147,11 @@ end
 
 # 試しにuser_id 4をpostしてみる
 あれ、挿入できる？？
+
+リッチポール??
+
+モデルを削除
+rails destroy model [モデル名]
+rails g model Post user:references
+
+PlantUML
