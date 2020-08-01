@@ -63,4 +63,46 @@ boolean : Boolean
 ```
 rails g model User email:string password:string
 rails g controller users
+rails db:create // 最初だけで大丈夫
+rake db:migrate
+```
+
+もう一度ルーティングを見てみた
+
+```
+Prefix Verb   URI Pattern Controller#Action
+api_v1_posts 
+GET    /api/v1/posts(:format)                                                   api/v1/posts#index
+
+POST   /api/v1/posts(.:format)                                                   api/v1/posts#create
+
+api_v1_post 
+GET    /api/v1/posts/:id(.:format)                                                      api/v1/posts#show
+
+PATCH  
+/api/v1/posts/:id(.:format)                                                      api/v1/posts#update
+
+PUT
+/api/v1/posts/:id(.:format)                                                      api/v1/posts#update
+
+DELETE 
+/api/v1/posts/:id(.:format)                                                     api/v1/posts#destroy
+```
+
+rails cの使い方
+```
+User.create(title: "aa",body: "bb")
+```
+
+requireとpermitメソッド
+セキュリティに関わる情報(email, password)を悪意ある変更から守る設定
+```
+def user_params
+ params.require(:user).permit(:name, :email, :password)
+end
+```
+
+やっぱりuser_id(外部キー)を追加したくなった
+```
+rails g migration AddUserIdToPosts
 ```
