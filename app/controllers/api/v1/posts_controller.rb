@@ -38,7 +38,7 @@ module Api
       def post_params
         print 'hoge'
         p params
-        params.require(:post).permit(:title)
+        params.require(:post).permit(:title, :user_id)
       end
     end
   end

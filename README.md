@@ -102,7 +102,48 @@ def user_params
 end
 ```
 
-やっぱりuser_id(外部キー)を追加したくなった
+# やっぱりuser_id(外部キー)を追加したくなった
+XXX_id ではなく、 XXX と書くだけで XXX_id の形にしてくれている
 ```
-rails g migration AddUserIdToPosts
+$ rails g migration AddUserIdToPosts
+↓
+class AddUserIdToPosts < ActiveRecord::Migration[5.2]
+  def change
+    # この一文を追加
+    add_reference :posts, :user, foreign_key: true
+  end
+end
+
+$ rake db:migrate
 ```
+
+そうするとpostsテーブルにuser_idという外部キーが紐つく
+当然nullが入っているので
+```
+$ rake db:migrate:reset
+$ rails db:seed
+```
+
+db/seed.rbに初期データを突っ込む
+
+```
+users = User.create([
+  {
+    email: "test@gmail.com",
+    password: "test1234"
+  },
+  {
+    email: "test2@gmail.com",
+    password: "test1234"
+  }
+])
+
+# もしくはループで挿入する
+3.times do |i|
+  User.create(email: "test#{i+1}@gmail.com", password: "test1234")
+  Post.create(user_id: User.find(i+1).id, title: "タイトル挿入#{i+1}")
+end
+```
+
+# 試しにuser_id 4をpostしてみる
+あれ、挿入できる？？
